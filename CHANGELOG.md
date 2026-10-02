@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 — 2026-10-03
+
+- Correct author-link tracking to this Shotstack repository and keep package, desktop and setup versions aligned.
+
+
 ## 2.0.0 - 2026-10-02
 
 - Refresh current Edit/Serve/Ingest schemas: 22 API operations and local account labels, 23 shared MCP tools/CLI commands.

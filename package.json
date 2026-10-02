@@ -1,6 +1,6 @@
 {
   "name": "@thenavidm/shotstack-mcp-cli",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Shotstack MCP and shared CLI with current Edit/Serve/Ingest schemas and confirmed account operations.",
   "type": "module",
   "main": "./dist/index.js",

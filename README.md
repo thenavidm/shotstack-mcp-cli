@@ -13,7 +13,7 @@ Shotstack MCP server and CLI for Codex and AI agents. **23 tools** for current r
 
 Built and maintained by [Navid Moazzez](https://navid.me?utm_source=github&utm_medium=referral&utm_campaign=shotstack-mcp-cli&utm_content=readme). The complete guide is on [navid.me](https://navid.me/mcp-servers/shotstack).
 
-<img src="https://cdn.navid.me/repos/shotstack-mcp-cli.gif?v=2.0.0" alt="Illustrated workflow in the house terminal component" width="520">
+<img src="https://cdn.navid.me/repos/shotstack-mcp-cli.gif?v=2.0.1" alt="Illustrated workflow in the house terminal component" width="520">
 
 The terminal illustrates real command names and approval flow. It is not a recording of a paid provider render. Shotstack already has official CLI/local/hosted MCP products; their Studio and semantic validation are compared below.
 
@@ -110,7 +110,7 @@ shotstack-cli doctor
 shotstack-cli tools
 ```
 
-Node 22+ is required for manual installation. The [shotstack-2.0.0.mcpb archive](https://github.com/thenavidm/shotstack-mcp-cli/releases/download/v2.0.0/shotstack-2.0.0.mcpb) bundles production dependencies for a compatible desktop host. Complete setup is in [INSTALL.md](INSTALL.md).
+Node 22+ is required for manual installation. The [shotstack-2.0.1.mcpb archive](https://github.com/thenavidm/shotstack-mcp-cli/releases/download/v2.0.1/shotstack-2.0.1.mcpb) bundles production dependencies for a compatible desktop host. Complete setup is in [INSTALL.md](INSTALL.md).
 
 After configuring private local credentials:
 
@@ -1616,7 +1616,7 @@ The useful recurring case is one explicitly approved local workflow across isola
 
 | Component | Version or baseline |
 | --- | --- |
-| Owned package/desktop | 2.0.0 |
+| Owned package/desktop | 2.0.1 |
 | API schemas | OpenAPI 3.0.1; document v1; checked 2026-10-02 |
 | Tools | 23 shared; 12 reads; 11 confirmed operations |
 | Official CLI release inspected | 0.8.4 |
@@ -1785,9 +1785,9 @@ Navid Moazzez is a leading AI business strategist, and the host of the AI Creato
 
 **Links**
 
-- Personal website: [navid.me](https://navid.me?utm_source=github&utm_medium=referral&utm_campaign=firefly-mcp-cli&utm_content=readme)
-- Link in bio: [navid.bio](https://navid.bio?utm_source=github&utm_medium=referral&utm_campaign=firefly-mcp-cli&utm_content=readme)
-- Navid Media: [navid.media](https://navid.media?utm_source=github&utm_medium=referral&utm_campaign=firefly-mcp-cli&utm_content=readme)
+- Personal website: [navid.me](https://navid.me?utm_source=github&utm_medium=referral&utm_campaign=shotstack-mcp-cli&utm_content=readme)
+- Link in bio: [navid.bio](https://navid.bio?utm_source=github&utm_medium=referral&utm_campaign=shotstack-mcp-cli&utm_content=readme)
+- Navid Media: [navid.media](https://navid.media?utm_source=github&utm_medium=referral&utm_campaign=shotstack-mcp-cli&utm_content=readme)
 - YouTube: [@thenavidm](https://youtube.com/@thenavidm?sub_confirmation=1) and [@thenavidai](https://youtube.com/@thenavidai?sub_confirmation=1)
 - X: [@thenavidm](https://x.com/thenavidm)
 - Instagram: [@thenavidm](https://instagram.com/thenavidm)
