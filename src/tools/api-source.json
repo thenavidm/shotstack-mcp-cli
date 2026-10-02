@@ -1,0 +1,31 @@
+{
+  "checked": "2026-10-02",
+  "operationCount": 22,
+  "sources": {
+    "edit": {
+      "source": "https://shotstack.io/docs/api/api.edit.json",
+      "originalSha256": "8f73f25595bd935653614ea798e8608668d0366749008cbb7b7cbd17daf82136",
+      "sanitizedSha256": "134ef9363d5dd6bad32c7871a696cd64d6cb0e85317466b21449ef9171ee13f9"
+    },
+    "serve": {
+      "source": "https://shotstack.io/docs/api/api.serve.json",
+      "originalSha256": "d6debd2eb1315c63dd91f362ad5f4675633519dc6b6114b9ce3f5342a7edb408",
+      "sanitizedSha256": "b8a50bd9171286d1c0fc6eb25525f6fdf5d4357c312e4132bff5f5c9e9735e86"
+    },
+    "ingest": {
+      "source": "https://shotstack.io/docs/api/api.ingest.json",
+      "originalSha256": "fff6ae0837242b9b19e180eda9a4387b92113f6e2529a74da993cc5310426456",
+      "sanitizedSha256": "80383aa36eeb9cbc3387fb894fc2f4700b0ca61b3a0960a9befdf97786f6b1c6"
+    }
+  },
+  "notes": [
+    "Provider-account rendering/generation and GUI outcomes remain separate from schema, fixture and protocol validation.",
+    "All OpenAPI examples stripped; 3.0 nullable/exclusive bounds normalized; local schema refs retained.",
+    "Legacy Create API routes are not advertised as current: generation is now on Edit /generate and /models.",
+    "Published official CLI 0.8.4 inspected separately from source commit b5992a7.",
+    "Current vendor specs omit path parameter declarations: required string parameters are derived only from literal route placeholders.",
+    "OpenAPI union Asset.additionalProperties=false without own properties rejects even valid image assets in standard JSON Schema. Normalize that union constraint to unevaluatedProperties=false, keeping branch validations and refusing extra evaluated fields.",
+    "Keep only transitively reachable request definitions in each tool; status/read calls do not carry unrelated rendering/response schemas.",
+    "Sanitize credential-bearing signed URL examples embedded in descriptions as well as all example/examples fields."
+  ]
+}
