@@ -13,7 +13,7 @@ Shotstack MCP server and CLI for Codex and AI agents. **23 tools** for current r
 
 Built and maintained by [Navid Moazzez](https://navid.me?utm_source=github&utm_medium=referral&utm_campaign=shotstack-mcp-cli&utm_content=readme). The complete guide is on [navid.me](https://navid.me/mcp-servers/shotstack).
 
-<img src="https://cdn.navid.me/repos/shotstack-mcp-cli.gif?v=2.0.1" alt="Illustrated workflow in the house terminal component" width="520">
+<img src="https://cdn.navid.me/repos/shotstack-mcp-cli-retina.gif" alt="Illustrated workflow in the house terminal component" width="520">
 
 The terminal illustrates real command names and approval flow. It is not a recording of a paid provider render. Shotstack already has official CLI/local/hosted MCP products; their Studio and semantic validation are compared below.
 
