@@ -1,12 +1,13 @@
 {
   "name": "@thenavidm/shotstack-mcp-cli",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Shotstack MCP and shared CLI with current Edit/Serve/Ingest schemas and confirmed account operations.",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
     "shotstack-mcp": "dist/index.js",
-    "shotstack-cli": "dist/index.js"
+    "shotstack-cli": "dist/index.js",
+    "shotstack-mcp-cli": "dist/npx.js"
   },
   "engines": {
     "node": ">=22"
