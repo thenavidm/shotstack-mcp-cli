@@ -2,7 +2,7 @@
   "manifest_version": "0.2",
   "name": "shotstack",
   "display_name": "Shotstack",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Shotstack MCP server with 23 tools: 12 reads and 11 confirmed operations.",
   "long_description": "Shared current Edit/Serve/Ingest operations with private named credentials and stage/v1 environment selection. Render, generation, account mutations and deletions require explicit confirmation. Signed upload URLs go to exclusive private files. Account and GUI outcomes remain separate from fixture/protocol validation.",
   "author": {

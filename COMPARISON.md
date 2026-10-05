@@ -18,16 +18,8 @@ The official repository's inspected b5992a7 source adds models/generate commands
 The useful recurring case is one explicitly approved local workflow across isolated account/environment profiles, with enforced direct-call policies and private upload credential delivery. Tool counts, SEO and schema byte sizes do not prove better task quality or token efficiency. Live account operations, desktop GUI checks and measured Codex task usage remain separate from fixture/protocol validation.
 
 
-MCP and CLI use the same SDK server, input schemas, handlers and confirmation guard. CLI commands use the SDK's in-memory transport; there is no second API implementation. Choose shell calls for scripts and the local MCP for a stdio AI client.
+MCP and CLI use the same input schemas, handlers and confirmation guard: [Slipway](https://github.com/thenavidm/slipway) builds the MCP server, over stdio or `--http`, and the CLI from each tool's one definition; there is no second API implementation. Choose shell calls for scripts and the local MCP for a stdio AI client.
 
-| Measurement | Required evidence |
-| --- | --- |
-| Eager MCP loading | Actual tool schemas and instructions sent to the model |
-| Deferred discovery | Actual selected schemas and lookup overhead |
-| Skill read once | Complete SKILL.md and command discovery |
-| Recurring skill listing | The installed skill description |
-| Equivalent successful task | Help/schema, reasoning, requests, output, retries and achieved result |
+README section 7 has this package's measured Claude Code and Codex costs against 2.0.2. No other offering was measured, so no comparison with one is claimed.
 
-Fresh Codex measurements are pending. Record model/client/package versions, date, loading settings, input/output usage, latency and equivalent results. Compare an existing-render status task and an approved template/render task with identical account environment and response fields.
-
-Do not estimate tokens from characters, borrow another package's results, infer efficiency from 23 tools or say CLI has zero cost. Local --select trims output after receipt; it does not change provider response size or quota. Provider credits remain separate from model tokens. Claude Code measurements are deferred at the current Codex priority.
+Local --select trims output after receipt; it does not change provider response size or quota. Provider credits remain separate from model tokens.

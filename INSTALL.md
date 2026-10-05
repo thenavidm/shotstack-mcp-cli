@@ -6,7 +6,7 @@ One npm package includes both binaries and all **23 tools**. Requires Node.js 22
 | --- | --- | --- |
 | Terminal | shotstack-cli | Scripts and agents with a shell |
 | Local MCP | shotstack-mcp | AI clients supporting stdio |
-| Desktop archive | shotstack-2.0.1.mcpb | Compatible Claude Desktop custom extensions |
+| Desktop archive | shotstack-3.0.0.mcpb | Compatible Claude Desktop custom extensions |
 | Shotstack-hosted alternative | https://mcp.shotstack.io/ | Official remote OAuth/API-key access |
 
 ## Contents
@@ -124,7 +124,7 @@ Alternatively install the CLI, make SKILL.md available to Claude, and use shell 
 
 ### Install the .mcpb extension
 
-1. Download `shotstack-2.0.1.mcpb` from [GitHub Releases](https://github.com/thenavidm/shotstack-mcp-cli/releases/latest).
+1. Download `shotstack-3.0.0.mcpb` from [GitHub Releases](https://github.com/thenavidm/shotstack-mcp-cli/releases/latest).
 2. In a supported Claude Desktop build, open **Settings > Extensions > Advanced settings > Install Extension…** and select it.
 3. Enter a private API key in the sensitive setting, or an absolute private token-file path. Leave the unused credential method empty. Shotstack uses x-api-key authentication.
 4. Enable read-only if you want only the five local/account reads. Reconnect and ask for account verification.

@@ -11,13 +11,13 @@
 
 Shotstack MCP server and CLI for Codex and AI agents. **23 tools** for current rendering, templates, generation models, Serve and Ingest, with private accounts and explicit mutation approval. One shared implementation supplies both binaries and a desktop bundle.
 
-Built and maintained by [Navid Moazzez](https://navid.me?utm_source=github&utm_medium=referral&utm_campaign=shotstack-mcp-cli&utm_content=readme). The complete guide is on [navid.me](https://navid.me/mcp-servers/shotstack).
+Built and maintained by [Navid Moazzez](https://navid.me?utm_source=github&utm_medium=referral&utm_campaign=shotstack-mcp-cli&utm_content=readme). Built on [Slipway](https://github.com/thenavidm/slipway), which turns one definition of each tool into the MCP server and the CLI. The complete guide is on [navid.me](https://navid.me/mcp-servers/shotstack).
 
 <img src="https://cdn.navid.me/repos/shotstack-mcp-cli-retina.gif" alt="Illustrated workflow in the house terminal component" width="520">
 
 The terminal illustrates real command names and approval flow. It is not a recording of a paid provider render. Shotstack already has official CLI/local/hosted MCP products; their Studio and semantic validation are compared below.
 
-Requires Node 22+ and eligible Shotstack API access for account operations. **Validation:** fixture tests, schema validation and protocol/artifact discovery are separate from provider-account rendering, desktop GUI outcomes and fresh measured task/token evidence. Pending evidence is recorded, without invented success rates or efficiency claims.
+Requires Node 22+ and eligible Shotstack API access for account operations. **Validation:** fixture tests, schema validation and protocol/artifact discovery are separate from provider-account rendering and desktop GUI outcomes, which are not claimed. Section 7 has the measured token costs.
 
 ## Two ways to use it
 
@@ -110,7 +110,7 @@ shotstack-cli doctor
 shotstack-cli tools
 ```
 
-Node 22+ is required for manual installation. The [shotstack-2.0.1.mcpb archive](https://github.com/thenavidm/shotstack-mcp-cli/releases/download/v2.0.1/shotstack-2.0.1.mcpb) bundles production dependencies for a compatible desktop host. Complete setup is in [INSTALL.md](INSTALL.md).
+Node 22+ is required for manual installation. The [shotstack-3.0.0.mcpb archive](https://github.com/thenavidm/shotstack-mcp-cli/releases/download/v3.0.0/shotstack-3.0.0.mcpb) bundles production dependencies for a compatible desktop host. Complete setup is in [INSTALL.md](INSTALL.md).
 
 After configuring private local credentials:
 
@@ -185,7 +185,7 @@ shotstack-cli get-render --id REAL_RENDER_ID --agent --select response.status,re
 | --- | --- |
 | `--json` | JSON output |
 | `--compact` | Single-line JSON |
-| `--agent` | JSON, compact, no input and no color |
+| `--agent` | Compact JSON and no prompts; never confirms a write |
 | `--select a,b.c` | Keep selected fields; dotted paths descend and arrays are traversed |
 | `--confirm` | Confirm the requested paid media operation |
 | `--no-input`, `--no-color`, `--yes` | Automation switches; none overrides the spending guard |
@@ -197,7 +197,8 @@ Global output flags apply to tool commands. `doctor` has its own `--network` opt
 | Exit code | Meaning | What a script should do |
 | --- | --- | --- |
 | 0 | Success | Read stdout |
-| 2 | Usage, invalid input or a refused write | Fix the input or confirm only the requested action |
+| 1 | Unexpected error | Report it with the command that caused it |
+| 2 | Usage, invalid input, a refused write, an unknown command or a hidden write | Fix the input or confirm only the requested action |
 | 3 | Job or local upload file not found | Check the ID/path |
 | 4 | Authentication or entitlement rejected | Check private credential settings and permissions |
 | 5 | API, network or polling failure | Inspect an accepted job before another paid submission |
@@ -208,19 +209,23 @@ The underscore spelling also works. `generate_asset` and `generate-asset` call t
 
 ## 7. MCP or CLI and token cost
 
-MCP and CLI use the same SDK server, input schemas, handlers and confirmation guard. CLI commands use the SDK's in-memory transport; there is no second API implementation. Choose shell calls for scripts and the local MCP for a stdio AI client.
+MCP and CLI use the same input schemas, handlers and confirmation guard: [Slipway](https://github.com/thenavidm/slipway) builds the MCP server, over stdio or `--http`, and the CLI from each tool's one definition; there is no second API implementation. Choose shell calls for scripts and the local MCP for a stdio AI client.
 
-| Measurement | Required evidence |
-| --- | --- |
-| Eager MCP loading | Actual tool schemas and instructions sent to the model |
-| Deferred discovery | Actual selected schemas and lookup overhead |
-| Skill read once | Complete SKILL.md and command discovery |
-| Recurring skill listing | The installed skill description |
-| Equivalent successful task | Help/schema, reasoning, requests, output, retries and achieved result |
+Measured on 2026-10-05 against 2.0.2, with Claude Code 2.1.286 on Claude Opus 5.5 (one short prompt with and without the server connected, the difference read from the API's own usage figures) and Codex 0.159.3 on gpt-6.1-sol:
 
-Fresh Codex measurements are pending. Record model/client/package versions, date, loading settings, input/output usage, latency and equivalent results. Compare an existing-render status task and an approved template/render task with identical account environment and response fields.
+| Cost | 2.0.2 | 3.0.0 |
+| --- | --- | --- |
+| Claude Code, every tool loaded, every message | 287,446 | 154,114 |
+| Claude Code's default, tool search, every message | 482 | 480 |
+| `SKILL.md`, read once | 1,207 | 1,266 |
+| Codex over the CLI, one task, median of five | 105,563 | 83,947 |
+| Codex over MCP, the same task, median of five | 46,793 | 47,033 |
 
-Do not estimate tokens from characters, borrow another package's results, infer efficiency from 23 tools or say CLI has zero cost. Local --select trims output after receipt; it does not change provider response size or quota. Provider credits remain separate from model tokens. Claude Code measurements are deferred at the current Codex priority.
+The task was "find the command that renders a template, and the flags it requires". Every tool loaded costs about half as much because Shotstack's edit schema spelled out its clip, track and asset types everywhere they appear, and each is now written once. Over the CLI, four 3.0.0 runs asked `which render template`, whose answer carries the command's help, where every 2.0.2 run read the command list and then the help: one request fewer. Over MCP, Codex now prints each destination `transfer_asset` can send a file to, where it printed 2.0.2's as `Array<unknown>`, 2,039 characters more, while seven other tools print shorter. `SKILL.md` costs 59 more because it says how approval works over MCP and what exit codes 1 and 2 cover.
+
+Tool-list bytes or characters divided by four are not API usage, and no other offering was measured.
+
+Local --select trims output after receipt; it does not change provider response size or quota. Provider credits remain separate from model tokens.
 
 ## 8. Every tool and argument
 
@@ -265,7 +270,7 @@ Every route and argument below comes from actual stdio discovery and reviewed cu
 | `disk` | No; body and guard rules apply | string | **Notice: This option is now deprecated and will be removed. Disk types are handled automatically. Setting a disk type has no effect.**  The disk type to use for storing footage and assets for each render.    `local` - optimized for high speed rendering with up to 512MB storage   `mount` - optimized for larger file sizes and longer videos with 5GB for source footage and 512MB for output render Values: `local`, `mount`. |
 | `instance` | No; body and guard rules apply | string | The render instance type to use for processing the edit.    `s1` - standard instance (default)   `s2` - standard instance with more resources   `a1` - accelerated instance for faster rendering Values: `s1`, `s2`, `a1`. default: `s1`. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `payload` | No; body and guard rules apply | object | Complete JSON request body instead of body flags. Preserves current endpoint fields and values. |
 | `payload_file` | No; body and guard rules apply | string | Regular local JSON body file, at most 5 MB. Cannot be mixed with body flags or payload. minLength: `1`. |
 
@@ -289,7 +294,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | `name` | No; body and guard rules apply | string | The template name |
 | `template` | No; body and guard rules apply | Edit | See the full input schema. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `payload` | No; body and guard rules apply | object | Complete JSON request body instead of body flags. Preserves current endpoint fields and values. |
 | `payload_file` | No; body and guard rules apply | string | Regular local JSON body file, at most 5 MB. Cannot be mixed with body flags or payload. minLength: `1`. |
 
@@ -322,7 +327,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | `name` | No; body and guard rules apply | string | The template name |
 | `template` | No; body and guard rules apply | Edit | See the full input schema. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `payload` | No; body and guard rules apply | object | Complete JSON request body instead of body flags. Preserves current endpoint fields and values. |
 | `payload_file` | No; body and guard rules apply | string | Regular local JSON body file, at most 5 MB. Cannot be mixed with body flags or payload. minLength: `1`. |
 
@@ -336,7 +341,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | --- | --- | --- | --- |
 | `id` | Yes | string | Exact resource ID from the selected account. minLength: `1`. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 
 #### render_template
 
@@ -347,7 +352,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | `id` | No; body and guard rules apply | string | The id of the template to render in UUID format. |
 | `merge` | No; body and guard rules apply | array | An array of key/value pairs that provides an easy way to create templates with placeholders. The placeholders can be used to find and replace keys with values. For example you can search for the placeholder `{{NAME}}` and replace it with the value `Jane`. Items: MergeField. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `payload` | No; body and guard rules apply | object | Complete JSON request body instead of body flags. Preserves current endpoint fields and values. |
 | `payload_file` | No; body and guard rules apply | string | Regular local JSON body file, at most 5 MB. Cannot be mixed with body flags or payload. minLength: `1`. |
 
@@ -372,7 +377,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | `asset` | No; body and guard rules apply | GenerationAsset | See the full input schema. |
 | `length` | No; body and guard rules apply | number | The length, in seconds, of the clip the asset fills. A model that generates to a duration takes it from this value in place of its own duration option. Other models ignore it. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `payload` | No; body and guard rules apply | object | Complete JSON request body instead of body flags. Preserves current endpoint fields and values. |
 | `payload_file` | No; body and guard rules apply | string | Regular local JSON body file, at most 5 MB. Cannot be mixed with body flags or payload. minLength: `1`. |
 
@@ -421,7 +426,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | --- | --- | --- | --- |
 | `id` | Yes | string | Exact resource ID from the selected account. minLength: `1`. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 
 #### get_asset_by_render_id
 
@@ -442,7 +447,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | `id` | No; body and guard rules apply | string | An identifier for the asset which must be provided by the client. The identifier does not need to be unique. |
 | `destinations` | No; body and guard rules apply | array | Specify the storage locations and hosting services to send the file to. Items: Destinations. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `payload` | No; body and guard rules apply | object | Complete JSON request body instead of body flags. Preserves current endpoint fields and values. |
 | `payload_file` | No; body and guard rules apply | string | Regular local JSON body file, at most 5 MB. Cannot be mixed with body flags or payload. minLength: `1`. |
 
@@ -459,7 +464,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | `destinations` | No; body and guard rules apply | Destinations | See the full input schema. |
 | `callback` | No; body and guard rules apply | string | An optional webhook callback URL used to receive status notifications when sources are uploaded and renditions processed. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `payload` | No; body and guard rules apply | object | Complete JSON request body instead of body flags. Preserves current endpoint fields and values. |
 | `payload_file` | No; body and guard rules apply | string | Regular local JSON body file, at most 5 MB. Cannot be mixed with body flags or payload. minLength: `1`. |
 
@@ -490,7 +495,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | --- | --- | --- | --- |
 | `id` | Yes | string | Exact resource ID from the selected account. minLength: `1`. |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 
 #### create_upload_url_file
 
@@ -499,7 +504,7 @@ A body is required. Use native body flags or one complete payload/payload_file; 
 | Argument | Required | Type | Details |
 | --- | --- | --- | --- |
 | `account` | No; body and guard rules apply | string | Named private Shotstack account; selects private credentials and stage/v1 environment. |
-| `confirm` | No; body and guard rules apply | boolean | Must be true for this exact requested render, generation, mutation, upload URL or deletion. |
+| `confirm` | No; body and guard rules apply | boolean | Set true only when the user asked for exactly this action. |
 | `secret_result_file` | Yes | string | New absolute JSON file in a private owner-only directory. Signed upload URL stays out of model output; no overwrite. minLength: `1`. |
 
 The output file must be new and absolute, in a private directory. It is reserved exclusively before the API call; the signed URL is never returned in model output. This command creates a temporary upload credential; it does not upload file bytes.
@@ -1494,7 +1499,9 @@ list_accounts returns labels, default status and environment, with no keys, path
 
 ## 12. Writing safely
 
-All eleven mutations use the established shared WriteGuard before the API handler. Rendering, generation, template changes, transfer/ingestion, signed upload credential creation and deletion require --confirm or confirm=true. --agent, --yes and client connection permission do not supply it.
+All eleven mutations use Slipway's write guard before the API handler. Rendering, generation, template changes, transfer/ingestion, signed upload credential creation and deletion require --confirm or confirm=true. --agent, --yes and client connection permission do not supply it.
+
+Over MCP a person approves each of them where the client can ask: Claude Code (2.1.246 and later) shows its own prompt, and a client that can show forms asks with an approval form whose one box starts unticked. Each approval is signed, bound to that exact call and works once. Where a client can do neither, the model's confirm=true counts. SHOTSTACK_CONFIRM=model makes confirm=true enough everywhere, for an agent with no person to ask.
 
 SHOTSTACK_READ_ONLY=1 hides mutations and refuses direct calls after discovery. SHOTSTACK_ALLOW_DESTRUCTIVE=0 blocks confirmed operations too. Restart/reconnect after changing policy. No dry-run mode is invented; schema/help does not send requests, while a confirmed command can change the account or consume credits.
 
@@ -1504,7 +1511,7 @@ No rollback, spend reservation or global transaction is implemented. Do not conf
 
 ## 13. How it works
 
-src/tools/operations.json is the reviewed shared catalogue for Edit, Serve and Ingest. ALL_TOOLS supplies one schema/handler set. The local MCP server and established SDK in-memory CLI bridge use the same validation and WriteGuard. No independent handwritten CLI action catalogue is maintained.
+src/tools/operations.json is the reviewed shared catalogue for Edit, Serve and Ingest. ALL_TOOLS supplies one schema/handler set. [Slipway](https://github.com/thenavidm/slipway) builds the local MCP server and the CLI from it, with the same validation and write guard. No independent handwritten CLI action catalogue is maintained.
 
 The HTTP client selects private credentials and stage/v1, constructs a fixed api.shotstack.io URL, refuses redirects and bounds time/body/response sizes. Ajv validates the native request definitions. Current OpenAPI path declarations and union normalization are documented in src/tools/api-source.json.
 
@@ -1539,6 +1546,12 @@ Private shell or client settings only. There is no automatic .env loader. Restar
 | `SHOTSTACK_REQUEST_TIMEOUT_MS` | 100–300000, default 30000 |
 | `SHOTSTACK_MAX_RETRIES` | 0–5, default 2; only short explicit GET 429 retries |
 | `SHOTSTACK_MIN_REQUEST_INTERVAL_MS` | 0–10000, default 150; account/process pacing |
+| `SHOTSTACK_CONFIRM` | `human` by default; `model` lets confirm:true alone approve over MCP, for an agent with no person to ask |
+| `SHOTSTACK_SURFACE` | `full` by default; `search` lists three tools that find, describe and run the rest |
+| `SHOTSTACK_TOOL_TIMEOUT_MS` | Give up on any tool after this long |
+| `SHOTSTACK_HTTP_PORT`, `SHOTSTACK_HTTP_HOST`, `SHOTSTACK_HTTP_TOKEN` | For `--http`: port 8787 and host 127.0.0.1 by default; any other host needs the bearer token |
+| `SHOTSTACK_HTTP_ALLOWED_ORIGINS` | Comma-separated browser origins allowed to call `--http`; a page from any other site is refused |
+| `SHOTSTACK_DEBUG` | `1` prints debug lines on stderr |
 
 ## 16. Updates and removal
 
@@ -1616,13 +1629,14 @@ The useful recurring case is one explicitly approved local workflow across isola
 
 | Component | Version or baseline |
 | --- | --- |
-| Owned package/desktop | 2.0.1 |
+| Owned package/desktop | 3.0.0 |
 | API schemas | OpenAPI 3.0.1; document v1; checked 2026-10-02 |
 | Tools | 23 shared; 12 reads; 11 confirmed operations |
 | Official CLI release inspected | 0.8.4 |
 | Official local MCP inspected | 1.1.0 (self-reported server version 1.0.0) |
 | Node baseline | 22+; CI Node 22/24 on Linux/macOS/Windows |
-| MCP TypeScript SDK | 1.32.0 |
+| Slipway | 0.1.20 |
+| MCP TypeScript SDK, through Slipway | 2.3.0 |
 | Ajv / ajv-formats | 8.20.0 / 3.0.1 |
 | TypeScript / Vitest / Vite | 7.0.2 / 5.0.3 / 8.3.2 |
 | MCPB packager | 2.1.2; development only |
@@ -1694,7 +1708,7 @@ Yes. Named account entries carry token_file/api_key and env. Select --account or
 <details>
 <summary><b>Does Codex work?</b></summary>
 
-Yes, through local stdio registration or shell commands. INSTALL.md puts Codex first and documents private environment forwarding. Fresh Codex task-token measurement remains pending.
+Yes, through local stdio registration or shell commands. INSTALL.md puts Codex first and documents private environment forwarding. Section 7 has what each costs in Codex.
 
 </details>
 
@@ -1797,7 +1811,7 @@ If this is useful, star the repo and come say hi on [X](https://x.com/thenavidm)
 
 ## Dependencies
 
-MCP TypeScript SDK 1.32.0, Ajv 8.20.0 and ajv-formats 3.0.1 at runtime. TypeScript 7.0.2, Vitest 5.0.3, Vite 8.3.2 and MCPB 2.1.2 are development tools. The exact dependency lock and upstream notices are retained. Packaging tools do not ship in the runtime bundle.
+Slipway 0.1.20, which brings the MCP TypeScript SDK 2.3.0, plus Ajv 8.20.0 and ajv-formats 3.0.1 at runtime. TypeScript 7.0.2, Vitest 5.0.3, Vite 8.3.2 and MCPB 2.1.2 are development tools. The exact dependency lock and upstream notices are retained. Packaging tools do not ship in the runtime bundle.
 
 ## License
 

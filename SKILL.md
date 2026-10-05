@@ -19,14 +19,15 @@ Use shotstack-cli tools, COMMAND --help and schema COMMAND. Groups are rendering
 
 ## Agent mode and inputs
 
-Use --agent for compact JSON and --select for needed output fields. Dashed commands map to underscore MCP tools. Repeat array flags for each item; nested objects take JSON. Body flags, payload and payload_file are mutually exclusive routes. Path/query/header flags remain separate. --agent/--yes never supply --confirm.
+Use --agent for compact JSON and --select for needed output fields. Dashed commands map to underscore MCP tools. Repeat array flags for each item; nested objects take JSON. Body flags, payload and payload_file are mutually exclusive routes. Path/query/header flags remain separate. --agent/--yes never supply --confirm. Over MCP the person approves each in the client's own prompt or form; confirm=true counts only where the client cannot ask.
 
 ## Exit codes
 
 | Exit | Meaning |
 | --- | --- |
 | 0 | Success |
-| 2 | Invalid usage or refused operation |
+| 1 | Unexpected error |
+| 2 | Invalid usage or refused operation, an unknown command or a hidden write |
 | 3 | Not found |
 | 4 | Authentication/permissions |
 | 5 | API/transport failure |
@@ -55,4 +56,4 @@ After private environment configuration:
 codex mcp add shotstack -- npx -y @thenavidm/shotstack-mcp-cli@latest
 ```
 
-Optional Claude Code setup and the other clients are in INSTALL.md. Fresh matched-task usage evidence is pending; do not invent token savings.
+Optional Claude Code setup and the other clients are in INSTALL.md. Measured costs are in README section 7.

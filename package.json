@@ -1,6 +1,6 @@
 {
   "name": "@thenavidm/shotstack-mcp-cli",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "Shotstack MCP and shared CLI with current Edit/Serve/Ingest schemas and confirmed account operations.",
   "type": "module",
   "main": "./dist/index.js",
@@ -23,12 +23,13 @@
     "sync:api": "node scripts/sync-openapi.mjs"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.32.0",
+    "@thenavidm/slipway": "^0.1.20",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1"
   },
   "devDependencies": {
     "@anthropic-ai/mcpb": "2.1.2",
+    "@modelcontextprotocol/sdk": "^1.32.0",
     "@types/node": "^22.10.0",
     "typescript": "^7.0.2",
     "vite": "^8.3.2",

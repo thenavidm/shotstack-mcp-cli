@@ -10,7 +10,9 @@ Token files and named settings stay private and outside repos. Keys are redacted
 
 The wrapper does not encrypt arbitrary output files, manage OS keychains, persist OAuth grants or guarantee Windows ACLs. Review [Shotstack's privacy policy](https://shotstack.io/privacy-policy/) and current sub-processors for service handling. Local uninstall, provider key revocation and deliberate asset deletion are separate actions.
 
-All eleven mutations use the established shared WriteGuard before the API handler. Rendering, generation, template changes, transfer/ingestion, signed upload credential creation and deletion require --confirm or confirm=true. --agent, --yes and client connection permission do not supply it.
+All eleven mutations use Slipway's write guard before the API handler. Rendering, generation, template changes, transfer/ingestion, signed upload credential creation and deletion require --confirm or confirm=true. --agent, --yes and client connection permission do not supply it.
+
+Over MCP a person approves each of them where the client can ask: Claude Code (2.1.246 and later) shows its own prompt, and a client that can show forms asks with an approval form whose one box starts unticked. Each approval is signed, bound to that exact call and works once. Where a client can do neither, the model's confirm=true counts. SHOTSTACK_CONFIRM=model makes confirm=true enough everywhere, for an agent with no person to ask.
 
 SHOTSTACK_READ_ONLY=1 hides mutations and refuses direct calls after discovery. SHOTSTACK_ALLOW_DESTRUCTIVE=0 blocks confirmed operations too. Restart/reconnect after changing policy. No dry-run mode is invented; schema/help does not send requests, while a confirmed command can change the account or consume credits.
 
